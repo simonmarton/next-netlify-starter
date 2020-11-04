@@ -3,41 +3,16 @@ import type { AppProps } from 'next/app';
 import netlifyIdentity from 'netlify-identity-widget';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createMuiTheme } from '@material-ui/core/styles';
-import green from '@material-ui/core/colors/green';
-import purple from '@material-ui/core/colors/purple';
+
+import theme from '../theme';
 
 import AuthContext from '@context/AuthContext';
 import AuthPage from '@components/AuthPage';
 
-const primaryGreen = green[500];
-const accentGreen = green.A200;
-const darkGreen = green[900];
-const primaryPurple = purple[500];
-const accentPurple = purple.A200;
-const darkPurple = purple[900];
-
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: {
-      light: accentPurple,
-      main: primaryPurple,
-      dark: darkPurple,
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: accentGreen,
-      main: primaryGreen,
-      dark: darkGreen,
-      contrastText: '#fff',
-    },
-  },
-});
-
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const [user, setUser] = useState(null);
 
+  // TODO: Move to separate file
   const auth = {
     init() {
       netlifyIdentity.on('login', (user) => {
@@ -61,7 +36,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   };
 
   useEffect(() => {
-    console.log({ pageProps });
     auth.init();
   }, []);
 
