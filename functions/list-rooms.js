@@ -1,33 +1,20 @@
-const axios = require('axios');
-require('dotenv').config();
-
-const { LOCAL, HASURA_URL, HASURA_ADMIN } = process.env;
-const isLocal = LOCAL === 'true';
+const utils = require('utils');
 
 const listRooms = async () => {
-  const { statusText, data } = await axios.post(
-    HASURA_URL,
-    {
-      query: `query {
-        rooms {
-          id
-          name
-          slug
-        }
-      }`,
-    },
-    {
-      headers: {
-        'X-Hasura-Admin-Secret': HASURA_ADMIN,
-      },
-    }
-  );
+  try {
+    const { rooms } = await utils.hasura(`query {
+      rooms {
+        id
+        name
+        slug
+      }
+    }`);
 
-  if (statusText !== 'OK') {
-    throw new Error('nope');
+    return rooms;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
   }
-
-  return data.data.rooms;
 };
 
 exports.handler = async () => {

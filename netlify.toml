@@ -2,3 +2,5 @@
   command = "yarn build && yarn export"
   publish = "out"
   functions = "functions/"
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
